@@ -25,9 +25,15 @@
 neutron_package_list: |-
   {% set packages = neutron_distro_packages %}
   {% if (neutron_services['neutron-openvswitch-agent']['group'] in group_names and neutron_services['neutron-openvswitch-agent'].service_en | bool)
+      or (neutron_services['neutron-ovn-northd']['group'] in group_names and neutron_services['neutron-ovn-northd'].service_en | bool)
+      or (neutron_services['neutron-ovn-controller']['group'] in group_names and neutron_services['neutron-ovn-controller'].service_en | bool)
       or (neutron_services['dragonflow-controller-agent']['group'] in group_names and neutron_services['dragonflow-controller-agent'].service_en | bool)
       or (neutron_services['dragonflow-l3-agent']['group'] in group_names and neutron_services['dragonflow-l3-agent'].service_en | bool) %}
   {% set _ = packages.extend(neutron_ovs_distro_packages) %}
+  {% endif %}
+  {% if (neutron_services['neutron-ovn-northd']['group'] in group_names and neutron_services['neutron-ovn-northd'].service_en | bool)
+      or (neutron_services['neutron-ovn-controller']['group'] in group_names and neutron_services['neutron-ovn-controller'].service_en | bool) %}
+  {% set _ = packages.extend(neutron_ovn_distro_packages) %}
   {% endif %}
   {% if neutron_services['neutron-linuxbridge-agent']['group'] in group_names and neutron_services['neutron-linuxbridge-agent'].service_en | bool %}
   {% set _ = packages.extend(neutron_lxb_distro_packages) %}
@@ -86,6 +92,9 @@ neutron_optional_vpnaas_pip_packages:
 neutron_optional_dragonflow_pip_packages:
   - dragonflow
   - python-etcd
+
+neutron_optional_ovn_pip_packages:
+  - networking-ovn
 
 neutron_proprietary_nuage_pip_packages:
   - nuage-openstack-neutron
@@ -169,6 +178,12 @@ neutron_plugins:
     mechanisms: "openvswitch"
     l3_agent_mode: "{% if 'nova_compute' in group_names %}dvr{% else %}dvr_snat{% endif %}"
     router_distributed: True
+    plugin_conf_ini_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
+    plugin_core: ml2
+    plugin_ini: plugins/ml2/ml2_conf.ini
+  ml2.ovs.ovn:
+    drivers_type: "{{ neutron_ml2_drivers_type }}"
+    mechanisms: "ovn"
     plugin_conf_ini_overrides: "{{ neutron_ml2_conf_ini_overrides }}"
     plugin_core: ml2
     plugin_ini: plugins/ml2/ml2_conf.ini
@@ -517,7 +532,16 @@ neutron_services:
    config_type: "ini"
    init_config_overrides: "{{ neutron_dragonflow_pubsub_agent_init_overrides }}"
    start_order: 3
-
+ neutron-ovn-northd:
+   group: neutron_ovn_northd
+   service_name: ovn-northd
+   service_en: "{{ neutron_plugin_type == 'ml2.ovs.ovn' }}"
+   start_order: 3
+ neutron-ovn-controller:
+   group: neutron_ovn_controller
+   service_name: ovn-controller
+   service_en: "{{ neutron_plugin_type == 'ml2.ovs.ovn' }}"
+   start_order: 3
 ###
 ### Internals: Drivers mappings
 ###

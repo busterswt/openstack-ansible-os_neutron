@@ -32,6 +32,15 @@ vni_ranges = {{ neutron_provider_networks.network_vxlan_ranges }}
 
 {% endif %}
 
+{% if neutron_provider_networks.network_geneve_ranges is defined %}
+
+# ML2 Geneve networks
+[ml2_type_geneve]
+vni_ranges = {{ neutron_provider_networks.network_geneve_ranges }}
+max_header_size = 38
+
+{% endif %}
+
 # Security groups
 [securitygroup]
 {% if neutron_plugin_type == 'ml2.ovs' %}
@@ -39,3 +48,10 @@ firewall_driver = iptables_hybrid
 {% endif %}
 enable_security_group = True
 enable_ipset = True
+
+{% if neutron_plugin_type == 'ml2.ovs.ovn' %}
+[ovn]
+ovn_nb_connection = tcp:{{ internal_lb_vip_address }}:6641
+ovn_sb_connection = tcp:{{ internal_lb_vip_address }}:6642
+ovn_l3_scheduler = {{ neutron_ovn_l3_scheduler }}
+{% endif %}

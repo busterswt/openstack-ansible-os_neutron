@@ -18,6 +18,9 @@ neutron_checksum_script: /etc/sysconfig/network-scripts/ifup-post-metadata-check
 neutron_ovs_distro_packages:
   - openvswitch
 
+neutron_ovn_distro_packages:
+  - openvswitch-ovn
+
 neutron_distro_packages:
   - conntrack-tools
   - dnsmasq
