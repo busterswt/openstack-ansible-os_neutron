@@ -542,6 +542,7 @@ neutron_services:
    service_name: ovn-controller
    service_en: "{{ neutron_plugin_type == 'ml2.ovs.ovn' }}"
    start_order: 3
+
 ###
 ### Internals: Drivers mappings
 ###
