@@ -49,9 +49,9 @@ firewall_driver = iptables_hybrid
 enable_security_group = True
 enable_ipset = True
 
-{% if neutron_plugin_type == 'ml2.ovs.ovn' %}
+{% if neutron_plugin_type == 'ml2.ovn' %}
 [ovn]
-ovn_nb_connection = tcp:{{ internal_lb_vip_address }}:6641
-ovn_sb_connection = tcp:{{ internal_lb_vip_address }}:6642
+ovn_nb_connection = tcp:{{ neutron_ovn_ip }}:6641
+ovn_sb_connection = tcp:{{ neutron_ovn_ip }}:6642
 ovn_l3_scheduler = {{ neutron_ovn_l3_scheduler }}
 {% endif %}

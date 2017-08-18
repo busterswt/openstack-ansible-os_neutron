@@ -50,6 +50,9 @@ networking_calico_git_repo: https://git.openstack.org/openstack/networking-calic
 networking_calico_git_install_branch: master
 dragonflow_git_repo: https://git.openstack.org/openstack/dragonflow
 dragonflow_git_install_branch: master
+networking_ovn_git_repo: https://git.openstack.org/openstack/networking-ovn
+networking_ovn_git_install_branch: master
+
 
 # Developer mode
 neutron_developer_mode: false
@@ -139,7 +142,10 @@ neutron_sriov_nic_agent_init_overrides: {}
 neutron_vpn_agent_init_overrides: {}
 neutron_vpnaas_agent_ini_overrides: {}
 neutron_ovn_local_conf_overrides: {}
-
+neutron_ovn_northd_ini_overrides: {}
+neutron_ovn_northd_init_overrides: {}
+neutron_ovn_controller_ini_overrides: {}
+neutron_ovn_controller_init_overrides: {}
 ###
 ### Quotas
 ###
@@ -374,3 +380,4 @@ dragonflow_publisher_bind_address: "*"
 ###
 
 neutron_ovn_l3_scheduler: leastloaded
+neutron_ovn_ip: "{{ internal_lb_vip_address }}"

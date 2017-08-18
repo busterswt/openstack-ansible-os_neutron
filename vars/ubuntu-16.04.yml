@@ -19,6 +19,8 @@ neutron_ovs_distro_packages:
   - openvswitch-common
   - openvswitch-switch
 
+neutron_ovs_service_name: openvswitch-switch
+
 neutron_ovn_distro_packages:
   - ovn-central
   - ovn-host
