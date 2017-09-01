@@ -50,9 +50,10 @@ networking_calico_git_repo: https://git.openstack.org/openstack/networking-calic
 networking_calico_git_install_branch: master
 dragonflow_git_repo: https://git.openstack.org/openstack/dragonflow
 dragonflow_git_install_branch: master
+networking_odl_git_repo: https://git.openstack.org/openstack/networking-odl
+networking_odl_git_install_branch: master
 networking_ovn_git_repo: https://git.openstack.org/openstack/networking-ovn
 networking_ovn_git_install_branch: master
-
 
 # Developer mode
 neutron_developer_mode: false
@@ -85,7 +86,7 @@ neutron_report_interval: "{{ neutron_agent_down_time | int / 2 | int }}"
 
 neutron_external_network_bridge: ""
 
-neutron_dns_domain: openstacklocal
+neutron_dns_domain: "openstacklocal."
 
 # If ``neutron_num_sync_threads`` is unset, the system will use the value of
 # neutron_api_threads in templates/dhcp_agent.ini.j2 for num_sync_threads.
@@ -126,6 +127,7 @@ neutron_metering_agent_init_overrides: {}
 neutron_ml2_conf_ini_overrides: {}
 neutron_neutron_conf_overrides: {}
 neutron_nuage_conf_ini_overrides: {}
+neutron_opendaylight_conf_ini_overrides: {}
 neutron_openvswitch_agent_ini_overrides: {}
 neutron_openvswitch_agent_init_overrides: {}
 # Provide a list of access controls to update the default policy.json with.

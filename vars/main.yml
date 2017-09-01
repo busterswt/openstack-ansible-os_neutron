@@ -28,7 +28,8 @@ neutron_package_list: |-
       or (neutron_services['neutron-ovn-northd']['group'] in group_names and neutron_services['neutron-ovn-northd'].service_en | bool)
       or (neutron_services['neutron-ovn-controller']['group'] in group_names and neutron_services['neutron-ovn-controller'].service_en | bool)
       or (neutron_services['dragonflow-controller-agent']['group'] in group_names and neutron_services['dragonflow-controller-agent'].service_en | bool)
-      or (neutron_services['dragonflow-l3-agent']['group'] in group_names and neutron_services['dragonflow-l3-agent'].service_en | bool) %}
+      or (neutron_services['dragonflow-l3-agent']['group'] in group_names and neutron_services['dragonflow-l3-agent'].service_en | bool)
+      or (neutron_plugin_type == 'ml2.opendaylight') %}
   {% set _ = packages.extend(neutron_ovs_distro_packages) %}
   {% endif %}
   {% if (neutron_services['neutron-ovn-northd']['group'] in group_names and neutron_services['neutron-ovn-northd'].service_en | bool)
@@ -96,6 +97,9 @@ neutron_optional_dragonflow_pip_packages:
 neutron_optional_ovn_pip_packages:
   - networking-ovn
 
+neutron_optional_opendaylight_pip_packages:
+  - networking-odl
+
 neutron_proprietary_nuage_pip_packages:
   - nuage-openstack-neutron
   - nuage-openstack-neutronclient
@@ -110,6 +114,7 @@ neutron_developer_constraints:
   - "git+{{ networking_calico_git_repo }}@{{ networking_calico_git_install_branch }}#egg=networking-calico"
   - "git+{{ dragonflow_git_repo }}@{{ dragonflow_git_install_branch }}#egg=dragonflow"
   - "git+{{ networking_ovn_git_repo }}@{{ networking_ovn_git_install_branch }}#egg=networking-ovn"
+  - "git+{{ networking_odl_git_repo }}@{{ networking_odl_git_install_branch }}#egg=networking-odl"
 
 neutron_bin: "/openstack/venvs/neutron-{{ neutron_venv_tag }}/bin"
 
@@ -215,6 +220,14 @@ neutron_plugins:
     mechanisms: "sriovnicswitch"
     plugin_ini: plugins/ml2/sriov_nic_agent.ini
     plugin_conf_ini_overrides: "{{ neutron_sriov_nic_agent_ini_overrides }}"
+  ml2.opendaylight:
+    drivers_type: "local,flat,vlan,gre,vxlan"
+    mechanisms: "opendaylight_v2"
+    plugin_conf_ini_overrides: "{{ neutron_opendaylight_conf_ini_overrides }}"
+    plugin_core: neutron.plugins.ml2.plugin.Ml2Plugin
+    plugin_ini: plugins/ml2/ml2_conf.ini
+    driver_interface: "openvswitch"
+    l3_agent_mode: "legacy"
 
 ###
 ### ML2 Plugin Configuration
@@ -238,6 +251,11 @@ _neutron_non_tunnel_types:
 
 # Tunnel network types used by the OVS agent
 neutron_tunnel_types: "{{ neutron_ml2_drivers_type.split(',') | difference(_neutron_non_tunnel_types) | join(',') }}"
+
+# OpenDaylight
+opendaylight_extra_features: ['odl-netvirt-openstack']
+opendaylight_install_method: "{{ (ansible_os_family=='Debian') | ternary('deb_repo', 'rpm_repo') }}"
+
 
 ###
 ### L3 Agent Plugin Configuration
