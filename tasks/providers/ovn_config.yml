@@ -47,8 +47,8 @@
     - neutron_services['neutron-ovn-northd']['group'] in group_names
       or neutron_services['neutron-ovn-controller']['group'] in group_names
 
-- name: Permit remote database access
-  command: "ovs-appctl -t ovsdb-server ovsdb-server/add-remote ptcp:6640:{{ ansible_host }}"
+- name: Create ovsdb-server listener
+  command: "ovs-vsctl set-manager ptcp:6640:{{ ansible_host }}"
   when:
     - neutron_services['neutron-ovn-northd']['group'] in group_names
 
