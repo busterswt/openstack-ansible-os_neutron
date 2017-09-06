@@ -88,12 +88,12 @@
     - neutron_services['neutron-ovn-northd']['group'] in group_names
 
 - name: Configure OVN northbound listener
-  command: "ovn-nbctl set-connection ptcp:6641:{{ ansible_host }}"
+  command: "ovn-nbctl set-connection ptcp:6641"
   when:
     - neutron_services['neutron-ovn-northd']['group'] in group_names
 
 - name: Configure OVN southbound listener
-  command: "ovn-sbctl set-connection ptcp:6642:{{ ansible_host }}"
+  command: "ovn-sbctl set-connection ptcp:6642"
   when:
     - neutron_services['neutron-ovn-northd']['group'] in group_names
 
