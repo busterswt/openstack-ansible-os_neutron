@@ -54,5 +54,7 @@ enable_ipset = True
 ovn_nb_connection = tcp:{{ neutron_ovn_ip }}:6641
 ovn_sb_connection = tcp:{{ neutron_ovn_ip }}:6642
 ovn_l3_scheduler = {{ neutron_ovn_l3_scheduler }}
+{% if neutron_services['neutron-server']['group'] in group_names %}
 ovn_metadata_enabled = True
+{% endif %}
 {% endif %}
