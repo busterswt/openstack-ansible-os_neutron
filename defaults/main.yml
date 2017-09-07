@@ -148,6 +148,8 @@ neutron_ovn_northd_ini_overrides: {}
 neutron_ovn_northd_init_overrides: {}
 neutron_ovn_controller_ini_overrides: {}
 neutron_ovn_controller_init_overrides: {}
+neutron_ovn_metadata_agent_ini_overrides: {}
+neutron_ovn_metadata_agent_init_overrides: {}
 ###
 ### Quotas
 ###
