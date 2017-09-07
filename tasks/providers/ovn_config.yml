@@ -136,3 +136,13 @@
     - ovn-config
   when:
     - neutron_services['neutron-ovn-controller']['group'] in group_names
+
+- name: Ensure ovn-metadata-agent service is started and enabled
+  service:
+    name: "ovn-metadata-agent"
+    state: started
+    enabled: yes
+  tags:
+    - ovn-config
+  when:
+    - neutron_services['neutron-ovn-controller']['group'] in group_names
