@@ -559,6 +559,8 @@ neutron_services:
    group: neutron_ovn_northd
    service_name: ovn-northd
    service_en: "{{ neutron_plugin_type == 'ml2.ovn' }}"
+   system_user = root
+   system_group = root
    config_overrides: "{{ neutron_ovn_northd_ini_overrides }}"
    config_type: "ini"
    init_config_overrides: "{{ neutron_ovn_northd_init_overrides }}"
@@ -568,6 +570,8 @@ neutron_services:
    group: neutron_ovn_controller
    service_name: ovn-controller
    service_en: "{{ neutron_plugin_type == 'ml2.ovn' }}"
+   system_user = root
+   system_group = root
    config_overrides: "{{ neutron_ovn_controller_ini_overrides }}"
    config_type: "ini"
    init_config_overrides: "{{ neutron_ovn_controller_init_overrides }}"
@@ -579,6 +583,8 @@ neutron_services:
    service_en: "{{ neutron_plugin_type == 'ml2.ovn' }}"
    service_conf_path: "{{ neutron_conf_dir }}"
    service_conf: networking_ovn_metadata_agent.ini
+   system_user = root
+   system_group = root
    config_options: "--config-file {{ neutron_conf_dir }}/neutron.conf --config-file {{ neutron_conf_dir }}/plugins/ml2/ml2_conf.ini --config-file {{ neutron_conf_dir }}/networking_ovn_metadata_agent.ini --log-file=/var/log/neutron/neutron-ovn-metadata-agent.log"
    config_overrides: "{{ neutron_ovn_metadata_agent_ini_overrides }}"
    config_type: "ini"
